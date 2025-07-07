@@ -1,0 +1,63 @@
+// Node structure
+class Node{
+    public:
+    int data;
+    Node* next;
+
+    Node(int _data):data(_data),next(nullptr){}
+
+};
+
+
+
+// to find middle Node of LL
+Node* findMiddle(Node* &head){
+  if(!head || !head->next) return head;
+
+  Node* slow = head;
+  Node* fast = head->next;
+
+  while(fast && fast->next){
+      slow = slow->next;
+      fast = fast->next->next;
+  }
+  return slow;
+}
+
+
+
+// to reverse LL
+Node* revrseLL(Node* & head){
+  if(!head || !head->next) return head;
+
+  Node* prev = nullptr;
+  Node* curr = head;
+
+  while(curr){
+    Node* forward = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = forward;
+  }
+  return prev;
+}
+
+
+// To check LL is palindrome or not?
+bool isPalindrome(Node* &head){
+    if(!head || !head->next) return true;
+
+    Node* temp = findMiddle(head);
+
+    Node* temp1 = head;
+    Node* temp2 = revrseLL(temp->next);
+
+    while(temp2){
+        if(temp1->data != temp2->data) return false;
+        temp1 = temp1->next;
+        temp2 = temp2->next;
+    }
+    return true;
+
+
+}
