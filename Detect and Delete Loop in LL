@@ -1,0 +1,91 @@
+# 3 variations are possible for this scenario
+
+# 1. Check Loop is Present or Not in LL?
+# 2. Find starting point in LL?
+# 3. Remove loop from LL?
+
+
+# 1. Check Loop is Present or Not in LL?
+bool checkLoop(Node* & head){
+    if(!head) return false;
+
+    Node* slow = head;
+    Node* fast = head;
+
+    while(fast){
+      fast = fast -> next;
+      if(fast){
+        slow = slow->next;
+        fast = fast->next;
+      }
+
+      if(slow == fast){
+        return true;
+      }
+    }
+    return false;
+    
+}
+
+
+
+# 2. Find starting point in LL?
+Node* findStartingPoint(Node* &head){
+  if(!head) return head;
+
+  Node* slow = head;
+  Node* fast = head;
+
+  while(fast){
+    fast = fast -> next;
+    if(fast){
+      slow = slow->next;
+      fast = fast->next;
+    }
+
+    if(slow == fast){
+      slow = head;
+      break;
+    }
+  }
+
+  while(slow != fast){
+    slow = slow ->next;
+    fast = fast ->next;
+  }
+  return slow;
+}
+
+
+# 3. Remove loop from LL?
+void removeLoop(Node* &head){
+  if(!head) return;
+
+  Node* slow = head;
+  Node* fast = head;
+
+  while(fast){
+    fast = fast -> next;
+    if(fast){
+      slow = slow->next;
+      fast = fast->next;
+    }
+
+    if(slow == fast){
+      slow = head;
+      break;
+    }
+  }
+
+  while(slow != fast){
+    slow = slow ->next;
+    if(fast->next != slow){
+      fast = fast ->next;
+    }
+    else{
+      fast->next = nullptr;
+      return;
+    }
+  }
+
+}
