@@ -1,0 +1,19 @@
+# To remove  duplicates
+
+void removeDuplicatesFromSortedLL(Node* &head){
+    if(!head || !head->next) return;
+
+    Node* curr = head;
+
+    while(curr && curr->next){
+      if(curr->data == curr->next->data){
+        Node* duplicate = curr->next;
+        curr->next = curr->next->next;
+        duplicate->next = nullptr;
+        delete duplicate;
+      }
+      else{
+        curr = curr->next;
+      }
+    }
+}
