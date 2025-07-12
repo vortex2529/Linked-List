@@ -1,0 +1,132 @@
+#include <iostream>
+using namespace std;
+
+class Node{
+    public:
+    int data;
+    Node* next;
+
+    Node(int value):data(value),next(nullptr){}
+};
+
+void printLL(Node* &head){
+  cout<<"Printing LL: "<<endl;
+  Node* curr = head;
+  while(curr){
+    cout<<curr->data<<"->";
+    curr = curr->next;
+  }
+  cout<<endl;
+}
+
+Node* reverseLL(Node* &head){
+    if(!head || !head->next) return head;
+
+    Node* prev = nullptr;
+    Node* curr = head;
+
+    while(curr){
+      Node* forward = curr->next;
+      curr->next = prev;
+      prev = curr;
+      curr = forward;
+    }
+    return prev;
+}
+Node* add2nums(Node* &head1,Node* &head2){
+    if(!head1) return head2;
+    if(!head2) return head1;
+
+    // step 1 :reverse head of both LL
+    head1 = reverseLL(head1);
+    head2 = reverseLL(head2);
+
+    //  step 2: Add two LL
+    Node* ansHead = nullptr;
+    Node* ansTail = nullptr;
+
+    int carry = 0;
+
+    while(head1 && head2){
+      int sum = head1->data + head2->data +carry;
+      int digit = sum%10;
+      carry = sum/10;
+
+      Node* newNode = new Node(digit);
+      if(!ansHead){
+        ansHead = newNode;
+        ansTail = newNode;
+      }
+      else{
+        ansTail->next = newNode;
+        ansTail = newNode;
+      }
+      head1 = head1->next;
+      head2 = head2->next;
+    }
+
+
+    while(head1){
+      int sum = head1->data +carry;
+      int digit = sum%10;
+      carry = sum/10;
+
+      Node* newNode = new Node(digit); 
+      ansTail->next = newNode;
+      head1 = head1->next;
+    }
+
+    while(head2){
+      int sum = head2->data +carry;
+      int digit = sum%10;
+      carry = sum/10;
+
+      Node* newNode = new Node(digit); 
+      ansTail->next = newNode;
+      head2 = head2->next;
+    }
+
+    while(carry!=0){
+      int sum = carry;
+      int digit = sum%10;
+      carry = sum/10;
+
+      Node* newNode = new Node(digit); 
+      ansTail->next = newNode;
+      ansTail = newNode;
+
+    }
+
+
+    // step 3: Reverse ans LL
+
+    ansHead = reverseLL(ansHead);
+    return ansHead;
+
+
+}
+int main() {
+
+  Node* head1 = new Node(2);
+  Node* sec = new Node(4);
+
+  Node* head2 = new Node(2);
+  Node* fourth = new Node(3);
+  Node* fifth = new Node(4);
+
+  head1->next = sec;
+  // sec->next = third;
+
+  head2->next = fourth;
+  fourth->next = fifth;
+
+  printLL(head1);
+  printLL(head2);
+
+  Node* head = add2nums(head1,head2);
+  printLL(head);
+
+
+  
+  return 0;
+}
