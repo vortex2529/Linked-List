@@ -1,0 +1,42 @@
+#Find Kth node from End of a LL (0 based index)
+
+int findLen(SinglyLinkedListNode* &head){
+    int len = 0;
+    SinglyLinkedListNode* curr = head;
+    while(curr){
+        len++;
+        curr = curr->next;
+    }
+    return len;
+}
+void solve(SinglyLinkedListNode* head, int &positionFromTail,int &ans){
+    if(head == 0) return;
+    
+    solve(head->next,positionFromTail,ans);
+    
+    if(positionFromTail == 0){
+        ans = head->data;
+    }
+    positionFromTail--;
+}
+int getNode(SinglyLinkedListNode* llist, int positionFromTail) {
+    // Recursive approach
+    
+    // int ans = -1;
+    // solve(llist,positionFromTail,ans);
+    // return ans;
+    
+    // Iterative approach
+    
+    int len = findLen(llist);
+    int ans = -1;
+    int val = len - positionFromTail;
+    
+    SinglyLinkedListNode* curr = llist;
+    int i = 1;
+    while(i<val){
+        curr = curr->next;
+        i++;
+    }
+    return curr != 0?curr->data:ans;  
+}
