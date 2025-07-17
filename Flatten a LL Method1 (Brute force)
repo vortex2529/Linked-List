@@ -1,0 +1,118 @@
+/* Node structure  used in the program
+
+struct Node{
+    int data;
+    struct Node * next;
+    struct Node * bottom;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+        bottom = NULL;
+    }
+
+};
+*/
+
+class Solution {
+  public:
+
+    Node* findMid(Node* head){
+        if(!head || !head->bottom) return head;
+
+        Node* slow = head;
+        Node* fast = head->bottom;
+
+        while(fast && fast->bottom){
+            fast = fast->bottom->bottom;
+            slow = slow->bottom;
+        }
+        return slow;
+    }
+
+    Node* mergeTwoLists(Node* list1, Node* list2) {
+        if(!list1) return list2;
+        if(!list2) return list1;
+        if(!list1 && !list2) return nullptr;
+
+        Node* dummy = new Node(-101);
+        Node* curr = dummy;
+
+        Node* curr1 = list1;
+        Node* curr2 = list2;
+
+        while(curr1 && curr2){
+            if(curr1->data == curr2->data){
+                curr->bottom = curr1;
+                curr1 = curr1->bottom;
+                curr = curr->bottom;
+
+                curr->bottom = curr2;
+                curr2 = curr2->bottom;
+                curr = curr->bottom;
+            }
+            else if(curr1->data < curr2->data){
+                curr->bottom = curr1;
+                curr1 = curr1->bottom;
+                curr = curr->bottom;
+            }
+            else{
+                curr->bottom = curr2;
+                curr2 = curr2->bottom;
+                curr = curr->bottom;
+            }
+        }
+
+        while(curr1){
+            curr->bottom = curr1;
+            curr1 = curr1->bottom;
+            curr = curr->bottom;
+        }
+        while(curr2){
+            curr->bottom = curr2;
+            curr2 = curr2->bottom;
+            curr = curr->bottom;
+        }
+
+        curr = dummy;
+        curr = curr->bottom;
+        dummy->next = nullptr;
+        delete dummy;
+        return curr;
+    }
+    Node* sortList(Node* &head) {
+        if(!head || !head->bottom) return head;
+
+        Node* mid = findMid(head);
+
+        Node* left = head;
+        Node* right = mid->bottom;
+        mid->bottom = 0;
+
+        left = sortList(left);
+        right = sortList(right);
+
+        return mergeTwoLists(left,right);
+    }
+    
+    Node *flatten(Node *root) {
+        Node* ansHead = new Node(-1);
+        Node* ptr = ansHead;
+        
+        
+        
+        while(root){
+            Node* temp = root;
+            while(temp){
+                ptr->bottom = temp;
+                ptr = ptr->bottom;
+                temp = temp->bottom;
+            }
+            root = root->next;
+        }
+        
+        return sortList(ansHead->bottom);
+        
+        
+    }
+};
