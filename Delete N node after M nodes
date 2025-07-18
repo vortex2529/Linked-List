@@ -1,0 +1,31 @@
+Node* helper(Node* head,int n,int m){
+        if(!head) return 0;
+        
+        Node* it = head;
+        for(int i=0;i<m-1;i++){
+            if(!it) break;
+            
+            it = it->next;
+        }
+        
+        if(!it) return head;
+        Node* mthNode = it;
+        
+        it = mthNode->next;
+        
+        for(int i=0;i<n;i++){
+            if(!it) break;
+            Node* temp = it->next;
+            delete it;
+            it = temp;
+            
+        }
+        mthNode->next = helper(it,n,m);
+        return head;
+        
+    }
+    Node* linkdelete(Node* head, int n, int m) {
+        
+        return helper(head,n,m);
+        
+    }
