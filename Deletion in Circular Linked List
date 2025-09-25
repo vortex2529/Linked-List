@@ -1,0 +1,55 @@
+/*
+class Node {
+    int data;
+    Node *next;
+
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+*/
+class Solution {
+  public:
+    Node* deleteNode(Node* head, int key) {
+        if(!head) return head;
+        
+        Node* curr = head;
+        Node* prev = 0;
+        
+        // single node
+        if(head->next == head && head->data == key){
+            head->next = 0;
+            delete head;
+            return 0;
+        }
+        
+        // deletion  At head
+        if(head->data == key){
+            prev = curr;
+            do{
+                prev = prev ->next;
+            }
+            while(prev->next != head);
+            
+            prev->next = curr->next;
+            delete curr;
+            return prev->next;
+        }
+        
+        
+        // deletion of any middle node
+        do{
+            prev = curr;
+            curr = curr->next;
+            if(curr->data == key){
+                prev->next = curr->next;
+                delete curr;
+                return head;
+            }
+        }while(curr->next != head);
+        
+        return head;
+        
+    }
+};
